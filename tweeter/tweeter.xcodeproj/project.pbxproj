@@ -15,6 +15,8 @@
 		A28516311F67228F00F3851B /* tweeterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516301F67228F00F3851B /* tweeterTests.swift */; };
 		A285163C1F67228F00F3851B /* tweeterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285163B1F67228F00F3851B /* tweeterUITests.swift */; };
 		A285164C1F67253800F3851B /* RestAcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285164B1F67253800F3851B /* RestAcessor.swift */; };
+		A28516541F67292900F3851B /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516531F67292900F3851B /* Tweet.swift */; };
+		A28516581F672B6600F3851B /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516571F672B6600F3851B /* MainTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		A285163B1F67228F00F3851B /* tweeterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tweeterUITests.swift; sourceTree = "<group>"; };
 		A285163D1F67228F00F3851B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A285164B1F67253800F3851B /* RestAcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAcessor.swift; sourceTree = "<group>"; };
+		A28516531F67292900F3851B /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
+		A28516571F672B6600F3851B /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				A28516241F67228F00F3851B /* LaunchScreen.storyboard */,
 				A28516271F67228F00F3851B /* Info.plist */,
 				A285164B1F67253800F3851B /* RestAcessor.swift */,
+				A28516531F67292900F3851B /* Tweet.swift */,
+				A28516571F672B6600F3851B /* MainTableViewController.swift */,
 			);
 			path = tweeter;
 			sourceTree = "<group>";
@@ -265,6 +271,8 @@
 				A285161E1F67228F00F3851B /* ViewController.swift in Sources */,
 				A285164C1F67253800F3851B /* RestAcessor.swift in Sources */,
 				A285161C1F67228F00F3851B /* AppDelegate.swift in Sources */,
+				A28516581F672B6600F3851B /* MainTableViewController.swift in Sources */,
+				A28516541F67292900F3851B /* Tweet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
