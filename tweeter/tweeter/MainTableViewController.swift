@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreLocation
 
-class MainTableViewController: UITableViewController, RestResponderDelegate {
+class MainTableViewController: UITableViewController, RestResponderDelegate, CLLocationManagerDelegate {
 
     
     @IBOutlet var tweetsTable: UITableView!
@@ -16,26 +17,48 @@ class MainTableViewController: UITableViewController, RestResponderDelegate {
     var restAcessor =  RestAcessor()
     var tweetsList = [Tweet]()
     
+    var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
+    let refreshControlView = UIRefreshControl()
+    
+    let getTweetsSelector = "getTweets"
+    
+    var locationManager = CLLocationManager()
+    
+    var currentLocation : CLLocation!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tweetsTable.delegate = self
         tweetsTable.dataSource = self
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
         
         restAcessor.restResponderDelegate = self
         
-        restAcessor.requestList()
+        getTweets()
+    
         
-        tweetsList.append(Tweet(_id: "13314", text:"A tweet text", lat: 22, long: 22, created_at : "hoje", updated_at: "amanha"))
+        refreshControlView.addTarget(self, action: Selector(getTweetsSelector), for: .valueChanged)
         
-        tweetsList.append(Tweet(_id: "13314", text:"A tweet text", lat: 22, long: 22, created_at : "hoje", updated_at: "amanha"))
+        if #available(iOS 10.0, *){
+            tableView.refreshControl = refreshControlView
+        }else{
+            tableView.addSubview(refreshControlView)
+        }
         
-        tweetsList.append(Tweet(_id: "13314", text:"A tweet text", lat: 22, long: 22, created_at : "hoje", updated_at: "amanha"))
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        loadingIndicator.frame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 40.0)
+        loadingIndicator.center = view.center
+        view.addSubview(loadingIndicator)
+        loadingIndicator.bringSubview(toFront: view)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        loadingIndicator.startAnimating()
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,65 +88,83 @@ class MainTableViewController: UITableViewController, RestResponderDelegate {
     }
  
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+ 
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            restAcessor.requestDeleteTweet(tweetID: tweetsList[indexPath.row]._id, pos: indexPath)
+            
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
  
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.currentLocation = locations[0]
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+
+    
+    @IBAction func didTabAddTweet(_ sender: UIBarButtonItem) {
+        let alertView = UIAlertController(title: "Insert a new tweet", message: "Please tip in your new tweet", preferredStyle: .alert)
+        
+        
+        alertView.addAction(UIAlertAction(title: "Tuitar", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let textField = alertView.textFields![0]
+            
+            if let location = self.currentLocation{
+                
+                let tweet = Tweet(_id: "", text: textField.text!, lat: location.coordinate.latitude, long: location.coordinate.longitude, created_at: "", updated_at: "")
+                
+                self.restAcessor.requestCreateTweet(tweet: tweet)
+                
+                self.loadingIndicator.startAnimating()
+            }
+            
+        }))
+        
+        alertView.addTextField(configurationHandler: {(textField: UITextField!) in
+            textField.placeholder = "Enter text:"
+            
+        })
+        
+        self.present(alertView, animated: true, completion: nil)
+        
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func getTweets(){
+        restAcessor.requestList()
     }
-    */
     
     func getListResponse(tweets: [Tweet]) {
-        print(tweets.first?.text)
-    }
-    
-    func deleteTweetResponse(tweet: Tweet) {
+        
+        tweetsList.removeAll()
+        tweetsList.append(contentsOf: tweets)
+        tableView.reloadData()
+        loadingIndicator.stopAnimating()
+        self.refreshControl?.endRefreshing()
         
     }
     
-    func postResponse() {
-        
+    func deleteTweetResponse(position : IndexPath) {
+        loadingIndicator.stopAnimating()
+        tweetsList.remove(at: position.row)
+        tableView.deleteRows(at: [position], with: .fade)
+
+    }
+    
+    func postResponse(tweet : Tweet) {
+        loadingIndicator.stopAnimating()
+        tweetsList.append(tweet)
+        tableView.reloadData()
+
     }
     
     func editResponse(tweet: Tweet) {
-        
+        loadingIndicator.stopAnimating()
+
     }
 
 }

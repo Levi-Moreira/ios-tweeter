@@ -48,5 +48,14 @@ class Tweet{
         
     }
     
+    func toJson() -> [String : Any ] {
+        var json = [String : Any]()
+        json["text"] = text
+        json["latitude"] = lat
+        json["longitude"] = long
+        
+        return json
+    }
+    
     
 }

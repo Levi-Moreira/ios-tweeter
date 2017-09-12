@@ -27,7 +27,7 @@
             </objects>
             <point key="canvasLocation" x="514" y="162"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Tuiter-->
         <scene sceneID="dF4-Cf-51r">
             <objects>
                 <tableViewController id="W6m-05-M6d" customClass="MainTableViewController" customModule="tweeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -50,7 +50,14 @@
                             <outlet property="delegate" destination="W6m-05-M6d" id="wxq-8V-KG5"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="TMP-cx-PXa"/>
+                    <navigationItem key="navigationItem" title="Tuiter" id="KEl-Zk-qi0">
+                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="VGR-SV-bAh"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="5gk-a6-rcL">
+                            <connections>
+                                <action selector="didTabAddTweet:" destination="W6m-05-M6d" id="xxr-rV-img"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tweetsTable" destination="8H4-RS-Q9W" id="4jY-Bn-rea"/>
                     </connections>
