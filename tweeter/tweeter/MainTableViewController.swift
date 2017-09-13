@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class MainTableViewController: UITableViewController, RestResponderDelegate, CLLocationManagerDelegate {
+class MainTableViewController: UITableViewController, CLLocationManagerDelegate {
 
     
     @IBOutlet var tweetsTable: UITableView!
@@ -38,8 +38,6 @@ class MainTableViewController: UITableViewController, RestResponderDelegate, CLL
         locationManager.startUpdatingLocation()
         
         
-        restAcessor.restResponderDelegate = self
-        
         getTweets()
     
         
@@ -63,10 +61,10 @@ class MainTableViewController: UITableViewController, RestResponderDelegate, CLL
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
     }
 
-    // MARK: - Table view data source
+
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -83,23 +81,121 @@ class MainTableViewController: UITableViewController, RestResponderDelegate, CLL
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath)
 
         cell.textLabel?.text = tweetsList[indexPath.row].text
+        getTweetLocation(tweet: tweetsList[indexPath.row], completionHandler: {(location) in
+            cell.detailTextLabel?.text = location
+        
+        })
 
         return cell
     }
  
 
  
-    
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+    func getTweetLocation(tweet: Tweet, completionHandler: @escaping (_ locationCity: String)-> Void){
+        let geocoder = CLGeocoder()
+        
+        
+        let location = CLLocation(latitude: CLLocationDegrees(tweet.lat), longitude: CLLocationDegrees(tweet.long))
+        
+        geocoder.reverseGeocodeLocation(location) { (placemark, error) in
+            if (error != nil) {
+                completionHandler("")
+            }
             
-            restAcessor.requestDeleteTweet(tweetID: tweetsList[indexPath.row]._id, pos: indexPath)
-            
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            if((placemark?.count)! > 0){
+                completionHandler((placemark?.first?.locality)!)
+            }else{
+                completionHandler("")
+            }
+        }
     }
+    
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, index) in
+            
+            let tweet = self.tweetsList[indexPath.row]
+
+            
+            let alertView = UIAlertController(title: "Review and edit your tweet", message: "Change anything you like", preferredStyle: .alert)
+            
+            
+            alertView.addAction(UIAlertAction(title: "Leave it be", style: .default, handler: { (action) in
+                alertView.dismiss(animated: true, completion: nil)
+            }))
+            
+            alertView.addAction(UIAlertAction(title: "Change it!", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                let textField = alertView.textFields![0]
+                
+                
+                
+                tweet.text = textField.text!
+                
+                if let location = self.currentLocation{
+                    
+                    tweet.lat = location.coordinate.latitude
+                    tweet.long = location.coordinate.longitude
+                    
+                    self.restAcessor.performEditTweet(tweet: self.tweetsList[indexPath.row], position: indexPath, completionHandler: {(position) in
+                        self.loadingIndicator.stopAnimating()
+                        self.tableView.reloadRows(at: [position], with: .fade)
+                    })
+                    
+                    self.loadingIndicator.startAnimating()
+                }
+                
+            }))
+            
+            alertView.addTextField(configurationHandler: {(textField: UITextField!) in
+                textField.placeholder = "Enter text:"
+                textField.text = tweet.text
+                
+            })
+            
+            self.present(alertView, animated: true, completion: nil)
+            
+        }
+        
+        
+        
+        
+        
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (action, index) in
+            
+            let alertView = UIAlertController(title: "R u sure about this?", message: "Do you really want to delete this tweet?", preferredStyle: .alert)
+            
+            
+            alertView.addAction(UIAlertAction(title: "I do not", style: .default, handler: { (action) in
+                alertView.dismiss(animated: true, completion: nil)
+            }))
+                
+            alertView.addAction(UIAlertAction(title: "Destroy it!", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                
+                
+                self.restAcessor.performTweetDelete(tweetID: self.tweetsList[indexPath.row]._id, pos: indexPath, completionHandler: {(position) in
+                    self.loadingIndicator.stopAnimating()
+                    self.tweetsList.remove(at: position.row)
+                    tableView.deleteRows(at: [position], with: .fade)
+                })
+                
+                self.loadingIndicator.startAnimating()
+                
+            }))
+
+            
+            self.present(alertView, animated: true, completion: nil)
+
+        }
+        
+        deleteAction.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        
+        
+        
+        return [deleteAction, editAction]
+    }
+    
+
  
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.currentLocation = locations[0]
@@ -108,7 +204,7 @@ class MainTableViewController: UITableViewController, RestResponderDelegate, CLL
 
     
     @IBAction func didTabAddTweet(_ sender: UIBarButtonItem) {
-        let alertView = UIAlertController(title: "Insert a new tweet", message: "Please tip in your new tweet", preferredStyle: .alert)
+        let alertView = UIAlertController(title: "Insert a new tweet", message: "Please type in your new tweet", preferredStyle: .alert)
         
         
         alertView.addAction(UIAlertAction(title: "Tuitar", style: UIAlertActionStyle.default, handler: { (action) -> Void in
@@ -118,7 +214,11 @@ class MainTableViewController: UITableViewController, RestResponderDelegate, CLL
                 
                 let tweet = Tweet(_id: "", text: textField.text!, lat: location.coordinate.latitude, long: location.coordinate.longitude, created_at: "", updated_at: "")
                 
-                self.restAcessor.requestCreateTweet(tweet: tweet)
+                self.restAcessor.performCreateTweet(tweet: tweet, completionHandler: {(tweet) in
+                    self.loadingIndicator.stopAnimating()
+                    self.tweetsList.append(tweet)
+                    self.tableView.reloadData()
+                })
                 
                 self.loadingIndicator.startAnimating()
             }
@@ -135,36 +235,15 @@ class MainTableViewController: UITableViewController, RestResponderDelegate, CLL
     }
     
     func getTweets(){
-        restAcessor.requestList()
-    }
-    
-    func getListResponse(tweets: [Tweet]) {
         
-        tweetsList.removeAll()
-        tweetsList.append(contentsOf: tweets)
-        tableView.reloadData()
-        loadingIndicator.stopAnimating()
-        self.refreshControl?.endRefreshing()
-        
+        restAcessor.performGetList { (tweets) in
+            self.tweetsList.removeAll()
+            self.tweetsList.append(contentsOf: tweets)
+            self.tableView.reloadData()
+            self.loadingIndicator.stopAnimating()
+            self.refreshControl?.endRefreshing()
+        }
     }
     
-    func deleteTweetResponse(position : IndexPath) {
-        loadingIndicator.stopAnimating()
-        tweetsList.remove(at: position.row)
-        tableView.deleteRows(at: [position], with: .fade)
-
-    }
-    
-    func postResponse(tweet : Tweet) {
-        loadingIndicator.stopAnimating()
-        tweetsList.append(tweet)
-        tableView.reloadData()
-
-    }
-    
-    func editResponse(tweet: Tweet) {
-        loadingIndicator.stopAnimating()
-
-    }
 
 }
