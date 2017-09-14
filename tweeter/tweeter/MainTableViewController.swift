@@ -15,7 +15,7 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBOutlet var tweetsTable: UITableView!
     
     var restAcessor =  RestAcessor()
-    var tweetsList = [Tweet]()
+    var tweetsList = [CTweet]()
     
     var loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
@@ -81,21 +81,33 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath)
 
         cell.textLabel?.text = tweetsList[indexPath.row].text
-        getTweetLocation(tweet: tweetsList[indexPath.row], completionHandler: {(location) in
-            cell.detailTextLabel?.text = location
         
-        })
+        let status = Reach().connectionStatus()
+        switch status {
+        case .unknown, .offline:
+            print("Not connected")
+            cell.detailTextLabel?.text = "Unavailable"
+        case .online:
+            print("Connected")
+            getTweetLocation(tweet: tweetsList[indexPath.row], completionHandler: {(location) in
+                cell.detailTextLabel?.text = location
+                
+            })
+        }
+
+        
+
 
         return cell
     }
  
 
  
-    func getTweetLocation(tweet: Tweet, completionHandler: @escaping (_ locationCity: String)-> Void){
+    func getTweetLocation(tweet: CTweet, completionHandler: @escaping (_ locationCity: String)-> Void){
         let geocoder = CLGeocoder()
         
         
-        let location = CLLocation(latitude: CLLocationDegrees(tweet.lat), longitude: CLLocationDegrees(tweet.long))
+        let location = CLLocation(latitude: CLLocationDegrees(tweet.latitude), longitude: CLLocationDegrees(tweet.longitude))
         
         geocoder.reverseGeocodeLocation(location) { (placemark, error) in
             if (error != nil) {
@@ -134,12 +146,13 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
                 
                 if let location = self.currentLocation{
                     
-                    tweet.lat = location.coordinate.latitude
-                    tweet.long = location.coordinate.longitude
+                    tweet.latitude = location.coordinate.latitude
+                    tweet.longitude = location.coordinate.longitude
                     
                     self.restAcessor.performEditTweet(tweet: self.tweetsList[indexPath.row], position: indexPath, completionHandler: {(position) in
                         self.loadingIndicator.stopAnimating()
                         self.tableView.reloadRows(at: [position], with: .fade)
+                        CTweet.save()
                     })
                     
                     self.loadingIndicator.startAnimating()
@@ -173,10 +186,13 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
             alertView.addAction(UIAlertAction(title: "Destroy it!", style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 
                 
-                self.restAcessor.performTweetDelete(tweetID: self.tweetsList[indexPath.row]._id, pos: indexPath, completionHandler: {(position) in
+                self.restAcessor.performTweetDelete(tweetID: self.tweetsList[indexPath.row].id!, pos: indexPath, completionHandler: {(position) in
                     self.loadingIndicator.stopAnimating()
-                    self.tweetsList.remove(at: position.row)
+                    let tweetToRemove = self.tweetsList.remove(at: position.row)
+                    tweetToRemove.delete()
+                    CTweet.save()
                     tableView.deleteRows(at: [position], with: .fade)
+                    
                 })
                 
                 self.loadingIndicator.startAnimating()
@@ -206,18 +222,30 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBAction func didTabAddTweet(_ sender: UIBarButtonItem) {
         let alertView = UIAlertController(title: "Insert a new tweet", message: "Please type in your new tweet", preferredStyle: .alert)
         
+        alertView.addAction(UIAlertAction(title: "Cancelar", style: .default, handler: { (action) in
+            alertView.dismiss(animated: true, completion: nil)
+        }))
+        
         
         alertView.addAction(UIAlertAction(title: "Tuitar", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let textField = alertView.textFields![0]
             
             if let location = self.currentLocation{
                 
-                let tweet = Tweet(_id: "", text: textField.text!, lat: location.coordinate.latitude, long: location.coordinate.longitude, created_at: "", updated_at: "")
+                let tweet = CTweet.create()
+                tweet.id = ""
+                tweet.text = textField.text!
+                tweet.latitude = location.coordinate.latitude
+                tweet.longitude = location.coordinate.longitude
+                tweet.created_at = ""
+                tweet.updated_at = ""
                 
+               
                 self.restAcessor.performCreateTweet(tweet: tweet, completionHandler: {(tweet) in
                     self.loadingIndicator.stopAnimating()
                     self.tweetsList.append(tweet)
                     self.tableView.reloadData()
+                    CTweet.save()
                 })
                 
                 self.loadingIndicator.startAnimating()
@@ -236,14 +264,41 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     func getTweets(){
         
-        restAcessor.performGetList { (tweets) in
-            self.tweetsList.removeAll()
-            self.tweetsList.append(contentsOf: tweets)
-            self.tableView.reloadData()
-            self.loadingIndicator.stopAnimating()
-            self.refreshControl?.endRefreshing()
+        
+        let status = Reach().connectionStatus()
+        switch status {
+        case .unknown, .offline:
+            print("Not connected")
+            
+            if let tweets = CTweet.getAllRecords(){
+                self.tweetsList.removeAll()
+                self.tweetsList.append(contentsOf: tweets)
+                self.tableView.reloadData()
+                self.loadingIndicator.stopAnimating()
+                self.refreshControl?.endRefreshing()
+            }
+        case .online:
+            print("Connected")
+            restAcessor.performGetList { (tweets) in
+                self.tweetsList.removeAll()
+                self.tweetsList.append(contentsOf: tweets)
+                self.tableView.reloadData()
+                self.loadingIndicator.stopAnimating()
+                self.refreshControl?.endRefreshing()
+                CTweet.save()
+            }
+
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "mapViewSegue"{
+            var mapViewController : MapViewController = segue.destination as! MapViewController
+            mapViewController.tweetList = tweetsList
+        
+        }
+    }
+    
+        
 
 }

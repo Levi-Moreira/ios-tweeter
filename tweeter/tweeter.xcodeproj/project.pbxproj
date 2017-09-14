@@ -17,6 +17,13 @@
 		A285164C1F67253800F3851B /* RestAcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285164B1F67253800F3851B /* RestAcessor.swift */; };
 		A28516541F67292900F3851B /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516531F67292900F3851B /* Tweet.swift */; };
 		A28516581F672B6600F3851B /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516571F672B6600F3851B /* MainTableViewController.swift */; };
+		A285165A1F69D1A700F3851B /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516591F69D1A700F3851B /* MapViewController.swift */; };
+		A285165D1F69D24400F3851B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A285165C1F69D24400F3851B /* MapKit.framework */; };
+		A2F2F0CB1F69E7EC00F78ECD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F2F0CA1F69E7EC00F78ECD /* CoreData.framework */; };
+		A2F2F0CE1F69E8AE00F78ECD /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A2F2F0CC1F69E8AE00F78ECD /* Model.xcdatamodeld */; };
+		A2F2F0D91F6B216200F78ECD /* CTweet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F2F0D71F6B216200F78ECD /* CTweet+CoreDataClass.swift */; };
+		A2F2F0DA1F6B216200F78ECD /* CTweet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F2F0D81F6B216200F78ECD /* CTweet+CoreDataProperties.swift */; };
+		A2F2F0DE1F6B38D400F78ECD /* Reach.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F2F0DD1F6B38D400F78ECD /* Reach.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +60,13 @@
 		A285164B1F67253800F3851B /* RestAcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAcessor.swift; sourceTree = "<group>"; };
 		A28516531F67292900F3851B /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		A28516571F672B6600F3851B /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		A28516591F69D1A700F3851B /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		A285165C1F69D24400F3851B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A2F2F0CA1F69E7EC00F78ECD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A2F2F0CD1F69E8AE00F78ECD /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		A2F2F0D71F6B216200F78ECD /* CTweet+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CTweet+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A2F2F0D81F6B216200F78ECD /* CTweet+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CTweet+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A2F2F0DD1F6B38D400F78ECD /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reach.swift; path = ../../../../Downloads/Reach.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +74,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2F2F0CB1F69E7EC00F78ECD /* CoreData.framework in Frameworks */,
+				A285165D1F69D24400F3851B /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,10 +99,14 @@
 		A285160F1F67228E00F3851B = {
 			isa = PBXGroup;
 			children = (
+				A2F2F0DD1F6B38D400F78ECD /* Reach.swift */,
+				A2F2F0D71F6B216200F78ECD /* CTweet+CoreDataClass.swift */,
+				A2F2F0D81F6B216200F78ECD /* CTweet+CoreDataProperties.swift */,
 				A285161A1F67228F00F3851B /* tweeter */,
 				A285162F1F67228F00F3851B /* tweeterTests */,
 				A285163A1F67228F00F3851B /* tweeterUITests */,
 				A28516191F67228F00F3851B /* Products */,
+				A285165B1F69D24400F3851B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				A285161B1F67228F00F3851B /* AppDelegate.swift */,
+				A2F2F0CC1F69E8AE00F78ECD /* Model.xcdatamodeld */,
 				A285161D1F67228F00F3851B /* ViewController.swift */,
 				A285161F1F67228F00F3851B /* Main.storyboard */,
 				A28516221F67228F00F3851B /* Assets.xcassets */,
@@ -112,6 +133,7 @@
 				A285164B1F67253800F3851B /* RestAcessor.swift */,
 				A28516531F67292900F3851B /* Tweet.swift */,
 				A28516571F672B6600F3851B /* MainTableViewController.swift */,
+				A28516591F69D1A700F3851B /* MapViewController.swift */,
 			);
 			path = tweeter;
 			sourceTree = "<group>";
@@ -132,6 +154,15 @@
 				A285163D1F67228F00F3851B /* Info.plist */,
 			);
 			path = tweeterUITests;
+			sourceTree = "<group>";
+		};
+		A285165B1F69D24400F3851B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A2F2F0CA1F69E7EC00F78ECD /* CoreData.framework */,
+				A285165C1F69D24400F3851B /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,8 +300,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A285161E1F67228F00F3851B /* ViewController.swift in Sources */,
+				A285165A1F69D1A700F3851B /* MapViewController.swift in Sources */,
 				A285164C1F67253800F3851B /* RestAcessor.swift in Sources */,
+				A2F2F0CE1F69E8AE00F78ECD /* Model.xcdatamodeld in Sources */,
 				A285161C1F67228F00F3851B /* AppDelegate.swift in Sources */,
+				A2F2F0D91F6B216200F78ECD /* CTweet+CoreDataClass.swift in Sources */,
+				A2F2F0DA1F6B216200F78ECD /* CTweet+CoreDataProperties.swift in Sources */,
+				A2F2F0DE1F6B38D400F78ECD /* Reach.swift in Sources */,
 				A28516581F672B6600F3851B /* MainTableViewController.swift in Sources */,
 				A28516541F67292900F3851B /* Tweet.swift in Sources */,
 			);
@@ -517,6 +553,7 @@
 				A28516421F67228F00F3851B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A28516431F67228F00F3851B /* Build configuration list for PBXNativeTarget "tweeterTests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +562,7 @@
 				A28516451F67228F00F3851B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A28516461F67228F00F3851B /* Build configuration list for PBXNativeTarget "tweeterUITests" */ = {
 			isa = XCConfigurationList;
@@ -533,8 +571,22 @@
 				A28516481F67228F00F3851B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A2F2F0CC1F69E8AE00F78ECD /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A2F2F0CD1F69E8AE00F78ECD /* Model.xcdatamodel */,
+			);
+			currentVersion = A2F2F0CD1F69E8AE00F78ECD /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A28516101F67228E00F3851B /* Project object */;
 }

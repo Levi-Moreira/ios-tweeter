@@ -23,7 +23,10 @@ struct RestAcessor {
     
     
     //Makes ab URL request to the server and returns a list of Tweets, or returns if an error occurs
-    func performGetList(completionHandler: @escaping (_ tweets: [Tweet]) -> Void ){
+    func performGetList(completionHandler: @escaping (_ tweets: [CTweet]) -> Void ){
+        
+        let currentlySaved = CTweet.getAllRecords()
+        
         let completeURL = baseURL + apiURL
         let requestURL = URL(string: completeURL)
         var request = URLRequest(url: requestURL!)
@@ -41,13 +44,35 @@ struct RestAcessor {
             
             if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [Any]{
             
-                var tweets = [Tweet]()
+                var tweets = [CTweet]()
             
                 if let convertedJson = json{
                     for case let result in convertedJson{
-                        if let tweet = Tweet(json: result as! [String : Any]){
-                            tweets.append(tweet)
-                        }
+                        
+                        let jsonFormated = result as! [String : Any]
+                        
+                         if let id = jsonFormated["_id"] as? String,
+                            let text = jsonFormated["text"] as? String,
+                            let latitude = jsonFormated["lat"] as? Double,
+                            let longitude = jsonFormated["long"] as? Double,
+                            let creation = jsonFormated["created_at"] as? String,
+                            let update = jsonFormated["updated_at"] as? String{
+                            
+                            //check here if it exists in the database already
+                                let tweet = CTweet.create()
+                                tweet.id = id
+                                tweet.text = text
+                                tweet.latitude = latitude
+                                tweet.longitude = longitude
+                                tweet.created_at = creation
+                                tweet.updated_at = update
+                        
+                                tweets.append(tweet)
+                            }
+                            else{
+                                print("unwrapping error")
+                                
+                            }
                     }
                 }
 
@@ -84,8 +109,6 @@ struct RestAcessor {
                 print(httpResponse.statusCode)
                 if httpResponse.statusCode == 200{
                     DispatchQueue.main.async {
-//                        self.restResponderDelegate?.actOnDeleteResponse(position: pos)
-                    
                         completionHandler(pos)
                     }
                 }
@@ -99,7 +122,7 @@ struct RestAcessor {
     
     
     //Makes an URL request to create a tweet, returns the recently created tweet to the view controller through the delegate
-    func performCreateTweet(tweet : Tweet, completionHandler : @escaping (_ tweet: Tweet) -> Void){
+    func performCreateTweet(tweet : CTweet, completionHandler : @escaping (_ tweet: CTweet) -> Void){
         if let jsonData = try? JSONSerialization.data(withJSONObject: tweet.toJson(), options: []) {
             
             
@@ -125,12 +148,34 @@ struct RestAcessor {
                     
                     if let convertedJson = json{
                         
-                            if let tweet = Tweet(json: convertedJson){
-                                DispatchQueue.main.async {
-                                    
-                                    completionHandler(tweet)
-                                }
+                        let tweet = CTweet.create()
+                        let jsonFormated = convertedJson 
+                        
+                        if let id = jsonFormated["_id"] as? String,
+                            let text = jsonFormated["text"] as? String,
+                            let latitude = jsonFormated["lat"] as? Double,
+                            let longitude = jsonFormated["long"] as? Double,
+                            let creation = jsonFormated["created_at"] as? String,
+                            let update = jsonFormated["updated_at"] as? String{
+                            
+                            tweet.id = id
+                            tweet.text = text
+                            tweet.latitude = latitude
+                            tweet.longitude = longitude
+                            tweet.created_at = creation
+                            tweet.updated_at = update
+                            
+                            DispatchQueue.main.async {
+                                
+                                completionHandler(tweet)
                             }
+                        }
+                        else{
+                            print("unwrapping error")
+                            
+                        }
+
+    
                         
                     }
                     
@@ -143,11 +188,11 @@ struct RestAcessor {
         }
     }
     
-    func performEditTweet(tweet : Tweet, position : IndexPath, completionHandler: @escaping (_ path: IndexPath)-> Void){
+    func performEditTweet(tweet : CTweet, position : IndexPath, completionHandler: @escaping (_ path: IndexPath)-> Void){
         if let jsonData = try? JSONSerialization.data(withJSONObject: tweet.toJson(), options: []) {
             
             
-            let completeURL = baseURL + apiURL + backbar + tweet._id
+            let completeURL = baseURL + apiURL + backbar + tweet.id!
 
             let requestURL = URL(string: completeURL)
             var request = URLRequest(url: requestURL!)
