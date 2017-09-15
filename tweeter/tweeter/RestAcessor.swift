@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct RestAcessor {
     
@@ -28,75 +29,55 @@ struct RestAcessor {
         let currentlySaved = CTweet.getAllRecords()
         
         let completeURL = baseURL + apiURL
-        let requestURL = URL(string: completeURL)
-        var request = URLRequest(url: requestURL!)
+ 
         
-        request.httpMethod = "GET"
-        
-        
-        let task = URLSession.shared.dataTask(with: request){
-            data, response, error in
-            
-            if error != nil{
-                print("Error when requesting a list of tweets. Sorry")
-                return
-            }
-            
-            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [Any]{
-            
+        Alamofire.request(completeURL).responseJSON { (response) in
+            if let json = response.result.value {
+                
                 var tweets = [CTweet]()
-            
-                if let convertedJson = json{
-                    for case let result in convertedJson{
+                
+                for case let result in json as! [Any]{
+                    
+                    let jsonFormated = result as! [String : Any]
+                    
+                    if let id = jsonFormated["_id"] as? String,
+                        let text = jsonFormated["text"] as? String,
+                        let latitude = jsonFormated["lat"] as? Double,
+                        let longitude = jsonFormated["long"] as? Double,
+                        let creation = jsonFormated["created_at"] as? String,
+                        let update = jsonFormated["updated_at"] as? String{
                         
-                        let jsonFormated = result as! [String : Any]
                         
-                         if let id = jsonFormated["_id"] as? String,
-                            let text = jsonFormated["text"] as? String,
-                            let latitude = jsonFormated["lat"] as? Double,
-                            let longitude = jsonFormated["long"] as? Double,
-                            let creation = jsonFormated["created_at"] as? String,
-                            let update = jsonFormated["updated_at"] as? String{
-                            
-                            
-                            
-                            let foundTweet = currentlySaved?.filter({
-                                $0.id == id
-                            })
-                            
-                            if foundTweet?.count == 0{
-                                let tweet = CTweet.create()
-                                tweet.id = id
-                                tweet.text = text
-                                tweet.latitude = latitude
-                                tweet.longitude = longitude
-                                tweet.created_at = creation
-                                tweet.updated_at = update
-                                tweets.append(tweet)
-                            }else{
-                                tweets.append((foundTweet?.first)!)
-                            }
-                            
                         
-                            
-                            }
-                            else{
-                                print("unwrapping error")
-                                
-                            }
+                        let foundTweet = currentlySaved?.filter({
+                            $0.id == id
+                        })
+                        
+                        if foundTweet?.count == 0{
+                            let tweet = CTweet.create()
+                            tweet.id = id
+                            tweet.text = text
+                            tweet.latitude = latitude
+                            tweet.longitude = longitude
+                            tweet.created_at = creation
+                            tweet.updated_at = update
+                            tweets.append(tweet)
+                        }else{
+                            tweets.append((foundTweet?.first)!)
+                        }
+                        
+                    }
+                    else{
+                        print("unwrapping error")
+                        
                     }
                 }
 
-            
-                DispatchQueue.main.async {
-                    completionHandler(tweets)
-                }
                 
+                completionHandler(tweets)
             }
         }
-        
-        task.resume()
-        
+
     }
     
     

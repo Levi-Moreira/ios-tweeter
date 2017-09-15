@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		85402E12B53EF3A98EA90EAC /* Pods_tweeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5DC255D6E60468FC3029BA /* Pods_tweeter.framework */; };
 		A285161C1F67228F00F3851B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285161B1F67228F00F3851B /* AppDelegate.swift */; };
 		A285161E1F67228F00F3851B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285161D1F67228F00F3851B /* ViewController.swift */; };
 		A28516211F67228F00F3851B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A285161F1F67228F00F3851B /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		966CDCEC5C9A97905CCF8AD7 /* Pods-tweeter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tweeter.release.xcconfig"; path = "Pods/Target Support Files/Pods-tweeter/Pods-tweeter.release.xcconfig"; sourceTree = "<group>"; };
 		A28516181F67228F00F3851B /* tweeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tweeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A285161B1F67228F00F3851B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A285161D1F67228F00F3851B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,8 @@
 		A2F2F0D81F6B216200F78ECD /* CTweet+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CTweet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A2F2F0DD1F6B38D400F78ECD /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reach.swift; path = ../../../../Downloads/Reach.swift; sourceTree = "<group>"; };
 		A2F2F0DF1F6C754400F78ECD /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		B9D0DB4486E2DDD78789D69E /* Pods-tweeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tweeter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tweeter/Pods-tweeter.debug.xcconfig"; sourceTree = "<group>"; };
+		BC5DC255D6E60468FC3029BA /* Pods_tweeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tweeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 			files = (
 				A2F2F0CB1F69E7EC00F78ECD /* CoreData.framework in Frameworks */,
 				A285165D1F69D24400F3851B /* MapKit.framework in Frameworks */,
+				85402E12B53EF3A98EA90EAC /* Pods_tweeter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +103,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01ABBE3B73ED46048EE0003E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B9D0DB4486E2DDD78789D69E /* Pods-tweeter.debug.xcconfig */,
+				966CDCEC5C9A97905CCF8AD7 /* Pods-tweeter.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A285160F1F67228E00F3851B = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +124,7 @@
 				A285163A1F67228F00F3851B /* tweeterUITests */,
 				A28516191F67228F00F3851B /* Products */,
 				A285165B1F69D24400F3851B /* Frameworks */,
+				01ABBE3B73ED46048EE0003E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,6 +179,7 @@
 			children = (
 				A2F2F0CA1F69E7EC00F78ECD /* CoreData.framework */,
 				A285165C1F69D24400F3851B /* MapKit.framework */,
+				BC5DC255D6E60468FC3029BA /* Pods_tweeter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -175,9 +191,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A28516401F67228F00F3851B /* Build configuration list for PBXNativeTarget "tweeter" */;
 			buildPhases = (
+				716B1B27D98EBB3F7835ADE0 /* [CP] Check Pods Manifest.lock */,
 				A28516141F67228E00F3851B /* Sources */,
 				A28516151F67228E00F3851B /* Frameworks */,
 				A28516161F67228E00F3851B /* Resources */,
+				D5FCC2D176CAA80C31BF1873 /* [CP] Embed Pods Frameworks */,
+				4B4B3C01ED0D262164FAF2AE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -297,6 +316,60 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4B4B3C01ED0D262164FAF2AE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tweeter/Pods-tweeter-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		716B1B27D98EBB3F7835ADE0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-tweeter-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D5FCC2D176CAA80C31BF1873 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-tweeter/Pods-tweeter-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tweeter/Pods-tweeter-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A28516141F67228E00F3851B /* Sources */ = {
@@ -462,6 +535,7 @@
 		};
 		A28516411F67228F00F3851B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9D0DB4486E2DDD78789D69E /* Pods-tweeter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = tweeter/Info.plist;
@@ -474,6 +548,7 @@
 		};
 		A28516421F67228F00F3851B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 966CDCEC5C9A97905CCF8AD7 /* Pods-tweeter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = tweeter/Info.plist;
