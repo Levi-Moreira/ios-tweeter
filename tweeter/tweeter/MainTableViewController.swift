@@ -14,6 +14,11 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     @IBOutlet var tweetsTable: UITableView!
     
+    @IBOutlet var mapButton: UIBarButtonItem!
+    
+    @IBOutlet var addButton: UIBarButtonItem!
+    
+    
     var restAcessor =  RestAcessor()
     var tweetsList = [CTweet]()
     
@@ -54,7 +59,7 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         view.addSubview(loadingIndicator)
         loadingIndicator.bringSubview(toFront: view)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        loadingIndicator.startAnimating()
+        
         
         
     }
@@ -172,8 +177,6 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         
         
         
-        
-        
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (action, index) in
             
             let alertView = UIAlertController(title: "R u sure about this?", message: "Do you really want to delete this tweet?", preferredStyle: .alert)
@@ -215,6 +218,8 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
  
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.currentLocation = locations[0]
+        addButton.isEnabled = true
+        mapButton.isEnabled = true
     }
 
 
@@ -269,6 +274,7 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         switch status {
         case .unknown, .offline:
             print("Not connected")
+  
             
             if let tweets = CTweet.getAllRecords(){
                 self.tweetsList.removeAll()
@@ -279,6 +285,8 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
             }
         case .online:
             print("Connected")
+
+            loadingIndicator.startAnimating()
             restAcessor.performGetList { (tweets) in
                 self.tweetsList.removeAll()
                 self.tweetsList.append(contentsOf: tweets)

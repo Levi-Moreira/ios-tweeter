@@ -76,18 +76,20 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Tuiter" id="KEl-Zk-qi0">
-                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="VGR-SV-bAh">
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" systemItem="action" id="VGR-SV-bAh">
                             <connections>
                                 <segue destination="BYZ-38-t0r" kind="show" identifier="mapViewSegue" id="CC1-8d-bI9"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="5gk-a6-rcL">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="add" id="5gk-a6-rcL">
                             <connections>
                                 <action selector="didTabAddTweet:" destination="W6m-05-M6d" id="xxr-rV-img"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="5gk-a6-rcL" id="8z8-ga-xYU"/>
+                        <outlet property="mapButton" destination="VGR-SV-bAh" id="Bse-GR-kuC"/>
                         <outlet property="tweetsTable" destination="8H4-RS-Q9W" id="4jY-Bn-rea"/>
                     </connections>
                 </tableViewController>

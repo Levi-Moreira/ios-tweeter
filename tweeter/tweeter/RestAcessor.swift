@@ -58,7 +58,13 @@ struct RestAcessor {
                             let creation = jsonFormated["created_at"] as? String,
                             let update = jsonFormated["updated_at"] as? String{
                             
-                            //check here if it exists in the database already
+                            
+                            
+                            let foundTweet = currentlySaved?.filter({
+                                $0.id == id
+                            })
+                            
+                            if foundTweet?.count == 0{
                                 let tweet = CTweet.create()
                                 tweet.id = id
                                 tweet.text = text
@@ -66,8 +72,13 @@ struct RestAcessor {
                                 tweet.longitude = longitude
                                 tweet.created_at = creation
                                 tweet.updated_at = update
-                        
                                 tweets.append(tweet)
+                            }else{
+                                tweets.append((foundTweet?.first)!)
+                            }
+                            
+                        
+                            
                             }
                             else{
                                 print("unwrapping error")
