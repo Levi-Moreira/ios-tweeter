@@ -22,5 +22,7 @@ extension CTweet {
     @NSManaged public var longitude: Double
     @NSManaged public var created_at: String?
     @NSManaged public var updated_at: String?
+    
+
 
 }

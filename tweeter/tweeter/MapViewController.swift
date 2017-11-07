@@ -7,27 +7,33 @@
 //
 
 import UIKit
-import MapKit
+//import MapKit
+import GoogleMaps
 
 class MapViewController: UIViewController {
 
+
+    @IBOutlet var mapVIew: GMSMapView!
     
     var tweetList : [CTweet] = []
-    
-    @IBOutlet var mapView: MKMapView!
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if tweetList.count > 0 {
+        let camera = GMSCameraPosition.camera(withLatitude: (tweetList.first?.latitude)!, longitude: (tweetList.first?.longitude)!, zoom: 3.0)
+         mapVIew = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+ 
+        
+        if tweetList.count > 0{
             addPinToMapView()
         }
-        // Do any additional setup after loading the view.
     }
+    
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func addPinToMapView(){
@@ -36,14 +42,14 @@ class MapViewController: UIViewController {
             addPin(text: tweet.text!, latitude: tweet.latitude, longitude: tweet.longitude)
         }
     }
-    
-    
+   
     func addPin(text: String, latitude: Double, longitude: Double){
-        let annotation = MKPointAnnotation()
-        let location = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
-        annotation.coordinate = location
-        annotation.title = text
-        mapView.addAnnotation(annotation)
+        
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        marker.snippet = text
+        marker.map = mapVIew
+        
     }
     
 

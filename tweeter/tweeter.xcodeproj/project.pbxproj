@@ -16,7 +16,6 @@
 		A28516311F67228F00F3851B /* tweeterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516301F67228F00F3851B /* tweeterTests.swift */; };
 		A285163C1F67228F00F3851B /* tweeterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285163B1F67228F00F3851B /* tweeterUITests.swift */; };
 		A285164C1F67253800F3851B /* RestAcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A285164B1F67253800F3851B /* RestAcessor.swift */; };
-		A28516541F67292900F3851B /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516531F67292900F3851B /* Tweet.swift */; };
 		A28516581F672B6600F3851B /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516571F672B6600F3851B /* MainTableViewController.swift */; };
 		A285165A1F69D1A700F3851B /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28516591F69D1A700F3851B /* MapViewController.swift */; };
 		A285165D1F69D24400F3851B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A285165C1F69D24400F3851B /* MapKit.framework */; };
@@ -61,7 +60,6 @@
 		A285163B1F67228F00F3851B /* tweeterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tweeterUITests.swift; sourceTree = "<group>"; };
 		A285163D1F67228F00F3851B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A285164B1F67253800F3851B /* RestAcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAcessor.swift; sourceTree = "<group>"; };
-		A28516531F67292900F3851B /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		A28516571F672B6600F3851B /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		A28516591F69D1A700F3851B /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		A285165C1F69D24400F3851B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -70,7 +68,7 @@
 		A2F2F0D71F6B216200F78ECD /* CTweet+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CTweet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A2F2F0D81F6B216200F78ECD /* CTweet+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CTweet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A2F2F0DD1F6B38D400F78ECD /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reach.swift; path = ../../../../Downloads/Reach.swift; sourceTree = "<group>"; };
-		A2F2F0DF1F6C754400F78ECD /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		A2F2F0DF1F6C754400F78ECD /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B9D0DB4486E2DDD78789D69E /* Pods-tweeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tweeter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tweeter/Pods-tweeter.debug.xcconfig"; sourceTree = "<group>"; };
 		BC5DC255D6E60468FC3029BA /* Pods_tweeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tweeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -149,7 +147,6 @@
 				A28516241F67228F00F3851B /* LaunchScreen.storyboard */,
 				A28516271F67228F00F3851B /* Info.plist */,
 				A285164B1F67253800F3851B /* RestAcessor.swift */,
-				A28516531F67292900F3851B /* Tweet.swift */,
 				A28516571F672B6600F3851B /* MainTableViewController.swift */,
 				A28516591F69D1A700F3851B /* MapViewController.swift */,
 			);
@@ -324,9 +321,13 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-tweeter/Pods-tweeter-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -359,10 +360,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-tweeter/Pods-tweeter-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/HandyJSON/HandyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HandyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -385,7 +390,6 @@
 				A2F2F0DA1F6B216200F78ECD /* CTweet+CoreDataProperties.swift in Sources */,
 				A2F2F0DE1F6B38D400F78ECD /* Reach.swift in Sources */,
 				A28516581F672B6600F3851B /* MainTableViewController.swift in Sources */,
-				A28516541F67292900F3851B /* Tweet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

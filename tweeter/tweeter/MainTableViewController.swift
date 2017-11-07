@@ -62,7 +62,8 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         loadingIndicator.bringSubview(toFront: view)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        
+        addButton.isEnabled = false
+        mapButton.isEnabled = false
         
     }
 
@@ -92,10 +93,8 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         let status = Reach().connectionStatus()
         switch status {
         case .unknown, .offline:
-            print("Not connected")
             cell.detailTextLabel?.text = "Unavailable"
         case .online:
-            print("Connected")
             getTweetLocation(tweet: tweetsList[indexPath.row], completionHandler: {(location) in
                 cell.detailTextLabel?.text = location
                 
@@ -275,9 +274,7 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
         let status = Reach().connectionStatus()
         switch status {
         case .unknown, .offline:
-            print("Not connected")
-  
-            
+
             if let tweets = CTweet.getAllRecords(){
                 self.tweetsList.removeAll()
                 self.tweetsList.append(contentsOf: tweets)
@@ -286,7 +283,7 @@ class MainTableViewController: UITableViewController, CLLocationManagerDelegate 
                 self.refreshControl?.endRefreshing()
             }
         case .online:
-            print("Connected")
+
 
             loadingIndicator.startAnimating()
             restAcessor.performGetList { (tweets) in

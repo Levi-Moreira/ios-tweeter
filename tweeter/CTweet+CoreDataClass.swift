@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import HandyJSON
 
 
 public class CTweet: NSManagedObject {

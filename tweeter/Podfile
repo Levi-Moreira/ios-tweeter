@@ -3,5 +3,9 @@ platform :ios, '10.0'
 use_frameworks!
 
 target 'tweeter' do
-pod 'Alamofire', '~> 4.5'
+    pod 'Alamofire', '~> 4.5'
+    pod 'GoogleMaps'
+    pod 'GooglePlaces'
+    pod 'SwiftyJSON'
+    pod 'HandyJSON', '~> 1.8.0'
 end
